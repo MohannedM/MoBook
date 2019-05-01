@@ -40,7 +40,8 @@ class Post{
         //Bind Values
         $this->db->bind(':title', $data['title']);
         $this->db->bind(':body', $data['body']);
-        $this->db->bind(':image', $data['image']);
+        $image = !empty($data['image']) ? $data['image'] : 'http://placehold.it/300x300'; 
+        $this->db->bind(':image', $image);
         $this->db->bind(':id', $data['id']);
         //Execute
         if($this->db->execute()){

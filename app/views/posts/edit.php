@@ -14,8 +14,9 @@
             <span class="invalid-feedback"><?php echo $data['body_err'];?></span>
         </div>
         <div class="form-group">
-            <label for="image">Image: <span class="text-secondary">(Optional)</span></label><br> 
-            <input type="file" name="image" class="btn btn-default" value="<?php echo $data['image'];?>">
+            <label for="image">Image: <span class="text-secondary">(Optional)</span></label><br>
+            <img src="<?php  echo !empty($data['image']) ? URLROOT . '/images/' . $data['image'] : 'http://placehold.it/300x300';?>" height="100" width="100" alt=""> 
+            <input type="file" name="image" class="btn btn-default" value="<?php echo URLROOT . '/images/' . $data['image'];?>">
             <span class="invalid-feedback"><?php echo $data['image_err'];?></span>
         </div>
         <input type="submit" value="Update Post" class="btn btn-lg btn-primary">

@@ -93,19 +93,21 @@ class Posts extends Controller{
     }
     public function edit($id = ''){
         if(!empty($id)){
+            $post = $this->postModel->getPostById($id);
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
     
                 //Clean posted inputs
                 $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
                 $image = $_FILES['image']['name'];
                 $image_tmp = $_FILES['image']['tmp_name'];
+
     
                 $data = [
                     'id'=>$id,
                     'user_id'=>$_SESSION['user_id'],
                     'title'=>rtrim($_POST['title']),
                     'body'=>rtrim($_POST['body']),
-                    'image'=>$image,
+                    'image'=>empty($image) ? $post->image : $image,
                     'title_err'=>'',
                     'body_err'=>'',
                     'image_err'=>''
@@ -130,7 +132,7 @@ class Posts extends Controller{
                     //Validate
                     if($this->postModel->editPost($data)){
                         //Move image to images publuic folder, set flash message, and redirect
-                        if(!empty($data['image'])){
+                        if(!empty($data['image']) && $_FILES['image']['name'] != $post->image){
                             move_uploaded_file($image_tmp, 'images/' . $image);
                         }
                         flash("post_message", "Post has been updated");
@@ -145,8 +147,7 @@ class Posts extends Controller{
     
     
             }else{
-                //Init View with data
-                $post = $this->postModel->getPostById($id);
+                //Init View with data  
                 $data = [
                     'id'=>$id,
                     'title'=>$post->title,
